@@ -1,4 +1,7 @@
-html{ font-size:16px}
+html{ 
+  font-size:16px;
+  font-family: Georgia;
+}
 
 .App {
   text-align: center;
@@ -8,6 +11,35 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+.PeterLogo {
+  font-size: large;
+  color: white;
+}
+
+.homePage {
+  font-style: italic;
+  font-weight: bold;
+  .ant-card-head {
+    background: rgb(187, 177, 177)
+  }
+
+  .blogAndLinks {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  .aboutThisBlog {
+    background: rgb(241, 252, 253);
+    flex: 1
+  };
+
+  .recentBlogs {
+    background: rgb(249, 238, 252);
+    flex: 1
+  }
 }
 
 .ant-layout {
@@ -41,12 +73,14 @@ body {
   /* min-height: 400px; */
 }
 
+
 .navLink {
   padding-left: 25px;
   color: #b6c6e8;
   font-size: larger;
 }
 
+/* markdown */
 pre {
   background: lightgray
 }
@@ -58,6 +92,10 @@ pre {
 code {
   background: lightgrey;
   font-weight: bold;
+};
+
+blockquote {
+  background: lightgray;
 };
 
 .postAddComment, .postComments {
@@ -174,8 +212,6 @@ code {
   }
 }
 
-
-
 @media screen and (max-width: 1024px) {
   .ant-layout-content {
     width: 100%;
@@ -195,4 +231,7 @@ code {
   }
 
 }
+
+
+
 

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { milkFileReader } from 'react-milkdown';
+import { milkFileReader } from '../../lib/milkdown/Milk';
 import { updateAliyunOss } from '../../config/api';
 import 'font-awesome/css/font-awesome.min.css';
-
 
 let blobReader = file => (
   new Promise(async (res, rej) => {
@@ -25,13 +24,6 @@ class Editor extends React.Component {
     value: '',
     onChange: () => { },
     style: { margin: "0 auto", width: '100%' }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // this.setState({ refresh: true })
-    // setTimeout(() => {
-    //   this.setState({ refresh: false })
-    // }, 50)
   }
 
   render() {

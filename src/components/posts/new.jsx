@@ -1,22 +1,11 @@
 import * as React from 'react';
-import { milkFileReader } from 'react-milkdown';
-import { Form, Input, Button, Select } from 'antd';
 import 'font-awesome/css/font-awesome.min.css';
-import { createNewPost, updateAliyunOss } from '../../config/api'
-import { Redirect, withRouter } from 'react-router';
+import { createNewPost } from '../../config/api';
+import { Redirect } from 'react-router';
 import PostMobx from '../../mobx/post';
 import AppMobx from '../../mobx/app';
 import { observer } from 'mobx-react';
-const Option = Select.Option
-
-let blobReader = file => (
-	new Promise(async (res, rej) => {
-		let url = await updateAliyunOss(file)
-		res(url);
-	})
-);
-
-const Milk = milkFileReader(blobReader);
+import PostForm from './_form'
 
 @observer
 class NewPost extends React.Component {
@@ -26,7 +15,6 @@ class NewPost extends React.Component {
 			title: PostMobx.post.lastTitle,
 			content: PostMobx.post.lastContent,
 			category_id: null,
-			formLayout: 'horizontal',
 			saveSuccess: false,
 			id: null
 		}
@@ -78,43 +66,22 @@ class NewPost extends React.Component {
 	}
 
 	render() {
-		const { content, formLayout, saveSuccess, id, title } = this.state
-		const { categories } = PostMobx.post
+		const { content, saveSuccess, id, title } = this.state
 		if (saveSuccess === true) {
 			return <Redirect to={`/posts/${id}`} />
 		} else {
 			return (
-				<div className="post-form">
-					<Form layout={formLayout} >
-						<Form.Item>
-							<Select placeholder={'选择一个类别'} onChange={this.onChangeCategory}>
-								{categories.map((c, index) => {
-									return (
-										<Option key={index} value={c.id}>{c.name}</Option>
-									)
-								} )}
-							</Select>
-						</Form.Item>
-						<Form.Item>
-							<Input value={title} placeholder="在此输入标题" onChange={this.onChangeTitle} />
-						</Form.Item>
-						<Form.Item>
-							<Milk
-								value={content}
-								onChange={this.onChangeContent}
-								style={{ margin: "0 auto", width: '100%' }}
-							/>
-						</Form.Item>
-						<Form.Item>
-							<Button type="primary" onClick={this.onSubmit} style={{ width: '100%' }}>
-								保存
-							</Button>
-						</Form.Item>
-					</Form>
-				</div>
+				<PostForm 
+					title={title} 
+					content={content} 
+					onChangeCategory={this.onChangeCategory}
+					onChangeTitle={this.onChangeTitle}
+					onChangeContent={this.onChangeContent}
+					onSubmit={this.onSubmit} 
+				/>
 			);
 		}
 	}
 }
 
-export default withRouter(NewPost);
+export default NewPost;

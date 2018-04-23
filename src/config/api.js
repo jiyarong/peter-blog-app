@@ -123,8 +123,8 @@ export const userUpdateInfo = (user) => {
 	return new Requester(_POST_(user), '/users/update_avatar').do_fetch()
 }
 
-export const getPostList = (page=1, tab='') => {
-	return new Requester(_GET_(), `/posts?page=${page}&tab=${tab}`).do_fetch()
+export const getPostList = (page=1, tab='', per_page=20) => {
+	return new Requester(_GET_(), `/posts?page=${page}&tab=${tab}&per_page=${per_page}`).do_fetch()
 }
 
 export const fetchCategories = () => {
@@ -135,8 +135,12 @@ export const createNewPost = (post) => {
 	return new Requester(_POST_(post), '/posts').do_fetch()
 }
 
-export const getPostDetail = (id) => {
-	return new Requester(_GET_(), `/posts/${id}`).do_fetch()
+export const updatePost = (id, post) => {
+	return new Requester(_PUT_(post), `/posts/${id}/update`).do_fetch()
+}
+
+export const getPostDetail = (id, with_comment=true) => {
+	return new Requester(_GET_(), `/posts/${id}?with_comment=${with_comment}`).do_fetch()
 }
 
 export const addNewComment = (comment) => {
@@ -149,5 +153,9 @@ export const getUserList = (page=1) => {
 
 export const updateUser = (id, user) => {
 	return new Requester(_PUT_(user), `/users/${id}`).do_fetch()
+}
+
+export const getRecentPosts = (user_id=null) => {
+	return new Requester(_GET_(), `/posts/recent_posts?user_id=${user_id}`).do_fetch()
 }
 

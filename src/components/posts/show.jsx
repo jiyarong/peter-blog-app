@@ -2,9 +2,11 @@ import * as React from 'react'
 import { getPostDetail, addNewComment } from '../../config/api'
 import ReactMarkDown from 'react-markdown'
 import CodeBlock from './code-block'
+import { Link } from 'react-router-dom'
 import { Spin, Card, Button, Icon } from 'antd'
 import Avatar from '../common/avatar'
 import Editor from '../common/editor'
+import userMobx from '../../mobx/user'
 import AppMobx from '../../mobx/app';
 import timeLabel from '../../lib/timeLabel';
 
@@ -64,9 +66,9 @@ class PostDetail extends React.Component {
 		})
 	}
 
-	replyComment = (name, floor) => {
+	replyComment = (user, floor) => {
 		let { currentComment } = this.state
-		currentComment.content = `<font color=#0099ff size=3 face="黑体">color=#0099ff size=3 face="黑体"</font>`
+		currentComment.content = `> 对 @${user.name} #${floor} 回复\r\r`
 		this.setState({ currentComment });
 	}
 
@@ -77,9 +79,9 @@ class PostDetail extends React.Component {
 				<Avatar user={creator} />
 				<div className={'commentContentContainer'}>
 					<div>{creator.name} #{index + 1} 回复于: {timeLabel(comment.created_at)}</div>
-					<div>{comment.content}</div>
+					<ReactMarkDown source={comment.content} renderers={{ code: CodeBlock }} />
 				</div>
-				<Button onClick={() => this.replyComment(creator.name, index)}>
+				<Button onClick={() => this.replyComment(creator, index + 1)}>
 					<Icon type="rollback" />
 				</Button>
 			</div>
@@ -89,7 +91,6 @@ class PostDetail extends React.Component {
 	render() {
 		const { loading, data, currentComment } = this.state
 		const { user, comments } = data
-		console.log(currentComment.content)
 		if (loading === true) {
 			return <div>正在加载数据...</div>
 		} else {
@@ -101,6 +102,13 @@ class PostDetail extends React.Component {
 								<div className={'postTitleInfo'}>
 									<h1>{data.title}</h1>
 									<Avatar user={user} />
+									{
+										data.user_id === userMobx.user.id ? 
+											<Link to={`/posts/edit/${data.id}`}>
+												<Icon type={'edit'} style={{fontSize: '25px', paddingLeft: '10px'}}/>
+											</Link> 
+											: null
+									}
 								</div>
 								<div>
 									<span>{user.name}</span>
@@ -108,7 +116,7 @@ class PostDetail extends React.Component {
 							</div>
 						}
 					>
-						<div className={'postContent'}>
+						<div className={'postContent'} >
 							<ReactMarkDown source={data.content} renderers={{ code: CodeBlock }} />
 						</div>
 					</Card>

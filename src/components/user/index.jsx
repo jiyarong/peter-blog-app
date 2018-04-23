@@ -1,10 +1,11 @@
-import * as React from 'react'
-import { Upload, message, Collapse, Button } from 'antd';
-import { updateAliyunOss } from '../../config/api';
+import * as React from 'react';
+import { Upload, message, Collapse, Button, List, Tag } from 'antd';
+import { updateAliyunOss, getRecentPosts } from '../../config/api';
 import { Redirect, Link } from 'react-router-dom';
-import userMobx from '../../mobx/user'
+import userMobx from '../../mobx/user';
 import { observer } from 'mobx-react';
 import AvatarCommon from '../common/avatar'
+import timeLabel from '../../lib/timeLabel'
 
 const Dragger = Upload.Dragger;
 const Panel = Collapse.Panel;
@@ -16,9 +17,20 @@ class UserIndex extends React.Component {
 		this.state = {
 			name: userMobx.user.name,
 			avatar: userMobx.user.avatar,
-			login_exoired: false
+			login_exoired: false,
+			recentPosts: []
 		}
 	};
+
+	componentDidMount() {
+		getRecentPosts().then((result) => {
+			if (result.success === true) {
+				this.setState({
+					recentPosts: result.data
+				})
+			}
+		})
+	}
 
 	//这里有个bug，customRequest无法和async await一起使用，用promise
 	uploadAvatar = (e) => {
@@ -31,6 +43,18 @@ class UserIndex extends React.Component {
 				}
 			})
 		})	
+	}
+
+	getRecentPost = (keys) => {
+		if (keys.includes('recentPost')) {
+			getRecentPosts().then((result) => {
+				if (result.success === true) {
+					this.setState({
+						recentPosts: result.data
+					})
+				}
+			})
+		}
 	}
 
 	rootOperates = () => {
@@ -50,16 +74,37 @@ class UserIndex extends React.Component {
 		this.setState({ login_exoired: true })
 	}		
 
+	recentPostList = (post) => {
+		let { category } = post
+		if (category == undefined) { category = { name: '垃圾' } }
+		return (
+			<div className={'postItem'}>
+				<div className={'postItemAvatar'}>
+					<AvatarCommon user={userMobx.user} />
+				</div>
+				<div className={'postItemCategory'}>
+					<Tag color={'green'}>{category.name}</Tag>
+				</div>
+				<div className={'postItemTitle'}>
+					<Link to={`/posts/${post.id}`} >
+						{post.title}
+					</Link>
+				</div>
+				<div className={'postItemUpdatedAt'}>{timeLabel(post.updated_at)}</div>
+			</div>
+		)
+	}
+
 	render() {
-		const { name, login_exoired } = this.state
+		const { name, login_exoired, recentPosts } = this.state
 		const { user } = userMobx
 		if (login_exoired === true) {
 			return <Redirect to={`/user/login`} />
 		}
 		return (
 			<div>
-				<Collapse defaultActiveKey={['1']}>
-					<Panel header="基本信息" key="1">
+				<Collapse defaultActiveKey={['baseInfo', 'recentPosts']} onChange={this.getRecentPost}>
+					<Panel header="基本信息" key="baseInfo">
 						<table className={'tableUserInfo'}>
 							<tbody>
 								<tr>
@@ -69,7 +114,7 @@ class UserIndex extends React.Component {
 								<tr>
 									<th>头像:</th>
 									<td>
-										<Dragger showUploadList={false} name='file' multiple={false} customRequest={this.uploadAvatar}>
+										<Dragger accept={'image/*'} showUploadList={false} name='file' multiple={false} customRequest={this.uploadAvatar}>
 											<AvatarCommon user={user} />
 											<p>点击此处或将图片拖到此处更新头像</p>
 										</Dragger>
@@ -80,7 +125,7 @@ class UserIndex extends React.Component {
 									<td>{user.role || '游客'}</td>
 								</tr>
 								<tr>
-									<th>操作</th>
+									<th>操作:</th>
 									<td>
 										<Button onClick={this.logout} type="primary" >退出登录</Button>
 										&nbsp;
@@ -94,8 +139,11 @@ class UserIndex extends React.Component {
 							</tbody>
 						</table>
 					</Panel>
-					<Panel header="最近的文章" key="2">
-						<p>{name}</p>
+					<Panel header="最近的文章" key="recentPosts">
+						<List dataSource={recentPosts} renderItem={this.recentPostList} />				
+					</Panel>
+					<Panel header="最近的评论" key="recentComments">
+						test
 					</Panel>
 				</Collapse>
 			</div>

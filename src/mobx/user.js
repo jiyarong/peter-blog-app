@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { userRegister, userLogin, userUpdateInfo } from '../config/api'
+import { userRegister, userLogin, userUpdateInfo, getRecentPosts } from '../config/api'
 import { Promise } from 'core-js';
 var crypto = require('crypto')
 
@@ -44,12 +44,11 @@ class UserMobx {
 		})
 	})
 	
-	
 	loginSuccess = (data) => {
 		this.user = data
 		this.user.status = true
 		let token = data.token
-		this.save_to_local(token, data)
+		this.save_to_local()
 	}
 
 	logout = () => {
@@ -80,7 +79,6 @@ class UserMobx {
 				res(false)
 			}
 		}).catch((err) => {
-			console.debug(err)
 			rej(err)
 		})
 	})

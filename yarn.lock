@@ -6530,6 +6530,10 @@ react-codemirror2@^3.0.7:
   version "3.0.7"
   resolved "http://registry.npm.taobao.org/react-codemirror2/download/react-codemirror2-3.0.7.tgz#d5d9888158263ae56da766539d7803486566ab9f"
 
+react-codemirror2@^5.0.0:
+  version "5.0.0"
+  resolved "http://registry.npm.taobao.org/react-codemirror2/download/react-codemirror2-5.0.0.tgz#18e0d4495c3cfe0c4675dd9bfcea074ca3aa9f56"
+
 react-dev-utils@^5.0.0:
   version "5.0.0"
   resolved "http://r.cnpmjs.org/react-dev-utils/download/react-dev-utils-5.0.0.tgz#425ac7c9c40c2603bc4f7ab8836c1406e96bb473"
@@ -6571,7 +6575,7 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-dropzone@^4.2.3:
+react-dropzone@^4.2.3, react-dropzone@^4.2.9:
   version "4.2.9"
   resolved "http://registry.npm.taobao.org/react-dropzone/download/react-dropzone-4.2.9.tgz#98156ce4d4cb018f7c5099eeb2eaff6dc21836fd"
   dependencies:
