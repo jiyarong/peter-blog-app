@@ -5,10 +5,12 @@
   "dependencies": {
     "ali-oss": "^4.13.2",
     "antd": "^3.3.3",
+    "codemirror": "^5.37.0",
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.12.0",
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.2",
+    "marked": "^0.3.19",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
     "ramda": "^0.25.0",
