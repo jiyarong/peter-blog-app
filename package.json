@@ -11,6 +11,7 @@
     "is-hotkey": "^0.1.2",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
+    "ramda": "^0.25.0",
     "react": "^16.2.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-app-rewire-mobx": "^1.0.8",
