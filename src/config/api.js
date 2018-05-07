@@ -72,8 +72,8 @@ class Requester {
 
 	constructor(header = {}, url) {
 		// this.host = 'http://u1c2g:7001/api'
-		// this.host = 'http://blog.peterji.cn:7001/api'
-		this.host = 'http://localhost:7001/api'
+		this.host = 'http://blog.peterji.cn:7001/api'
+		//this.host = 'http://localhost:7001/api'
 		this.url = url
 		this.header = header
 	}
