@@ -1,13 +1,14 @@
-import * as React from 'react'
-import { getPostDetail, addNewComment } from '../../config/api'
-import ReactMarkDown from 'react-markdown'
-import CodeBlock from './code-block'
-import { Link } from 'react-router-dom'
-import { Spin, Card, Button, Icon } from 'antd'
-import Avatar from '../common/avatar'
-import Editor from '../common/editor'
-import userMobx from '../../mobx/user'
+import * as React from 'react';
+import { getPostDetail, addNewComment, destroyPost } from '../../config/api';
+import ReactMarkDown from 'react-markdown';
+import CodeBlock from './code-block';
+import { Redirect } from 'react-router-dom';
+import { Card, Button, Icon } from 'antd';
+import Avatar from '../common/avatar';
+import Editor from '../common/editor';
+import userMobx from '../../mobx/user';
 import AppMobx from '../../mobx/app';
+import PostMobx from '../../mobx/post';
 import timeLabel from '../../lib/timeLabel';
 
 class PostDetail extends React.Component {
@@ -17,6 +18,8 @@ class PostDetail extends React.Component {
 			id: props.match.params.id,
 			loading: true,
 			data: {},
+			edit: false,
+			destroyed: false,
 			currentComment: {
 				commentable_id: props.match.params.id,
 				commentable: 'post',
@@ -66,6 +69,18 @@ class PostDetail extends React.Component {
 		})
 	}
 
+	destroyPost = () => {
+		if (window.confirm('确认删除?')) {
+			destroyPost(this.state.id).then((result) => {
+				if (result.success === true) {
+					this.setState({ destroyed: true })
+					PostMobx.refresh()
+					window.message.success('成功删除!')
+				}
+			})
+		}
+	}
+
 	replyComment = (user, floor) => {
 		let { currentComment } = this.state
 		currentComment.content = `> 对 @${user.name} #${floor} 回复\r\r`
@@ -78,7 +93,7 @@ class PostDetail extends React.Component {
 			<div key={index} className={'comment'}>
 				<Avatar user={creator} />
 				<div className={'commentContentContainer'}>
-					<div>{creator.name} #{index + 1} 回复于: {timeLabel(comment.created_at)}</div>
+					<div>{creator && creator.name || '无名'} #{index + 1} 回复于: {timeLabel(comment.created_at)}</div>
 					<ReactMarkDown source={comment.content} renderers={{ code: CodeBlock }} />
 				</div>
 				<Button onClick={() => this.replyComment(creator, index + 1)}>
@@ -89,10 +104,14 @@ class PostDetail extends React.Component {
 	}
 
 	render() {
-		const { loading, data, currentComment } = this.state
+		const { loading, data, currentComment, edit, destroyed } = this.state
 		const { user, comments } = data
 		if (loading === true) {
 			return <div>正在加载数据...</div>
+		} else if (edit === true) {
+			return <Redirect to={`/posts/edit/${data.id}`} />
+		} else if (destroyed === true) {
+			return <Redirect to={`/posts`} />
 		} else {
 			return (
 				<div>
@@ -103,10 +122,16 @@ class PostDetail extends React.Component {
 									<h1>{data.title}</h1>
 									<Avatar user={user} />
 									{
-										data.user_id === userMobx.user.id ? 
-											<Link to={`/posts/edit/${data.id}`}>
-												<Icon type={'edit'} style={{fontSize: '25px', paddingLeft: '10px'}}/>
-											</Link> 
+										data.user_id === userMobx.user.id ?
+											<div style={{ paddingLeft: '10px' }}>
+												<Button onClick={() => this.setState({ edit: true })} >
+													<Icon type={'edit'} style={{ fontSize: '15px' }} />
+												</Button>
+												&nbsp;
+												<Button type={'danger'} onClick={this.destroyPost}>
+													<Icon type={'close'} style={{ fontSize: '15px' }} />
+												</Button>
+											</div>
 											: null
 									}
 								</div>

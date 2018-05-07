@@ -9,13 +9,14 @@ class AvatarCommon extends React.Component {
     }
   }
 
-  render () {
+  render() {
     let { user } = this.props
-    if (user.name === undefined) {user.name = 'u'}
+    if (user === null) { user = {} }
+    if (user.name === undefined) { user.name = 'u' }
     if (user.avatar_url === undefined || user.avatar_url === "") {
-      return(
+      return (
         <Avatar>{user.name[0].toUpperCase()}</Avatar>
-      ) 
+      )
     } else {
       return <Avatar src={user.avatar_url} />
     }

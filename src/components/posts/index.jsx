@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Spin, List, Tag, Card } from 'antd';
-import { Link } from 'react-router-dom';
-import timeLabel from '../../lib/timeLabel';
+import { Spin, List, Card } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import { observer } from 'mobx-react';
 import postMobx from '../../mobx/post';
 import userMobx from '../../mobx/user'
-import AvatarCommon from '../common/avatar';
+import PostItem from '../common/postItem'
 
 @observer
 class PostList extends React.Component {
@@ -21,27 +19,6 @@ class PostList extends React.Component {
 		}
 	}
 
-	postItem = (post) => {
-		let { user, category } = post
-		if (category == undefined) { category = { name: '垃圾' } }
-		return (
-			<div className={'postItem'}>
-				<div className={'postItemAvatar'}>
-					<AvatarCommon user={user} />
-				</div>
-				<div className={'postItemCategory'}>
-					<Tag color={'green'}>{category.name}</Tag>
-				</div>
-				<div className={'postItemTitle'}>
-					<Link to={`/posts/${post.id}`} >
-						{post.title}
-					</Link>
-				</div>
-				<div className={'postItemUpdatedAt'}>{timeLabel(post.updated_at)}</div>
-			</div>
-		)
-	}
-
 	handleInfiniteOnLoad = (page) => {
 		const { initializing, loading } = postMobx.post
 		if (initializing || loading) return
@@ -53,7 +30,7 @@ class PostList extends React.Component {
 	}
 
 	render() {
-		const { loading, data, hasMore, categories , tab , status} = postMobx.post
+		const { loading, data, hasMore, categories, tab } = postMobx.post
 		let tablist = [
 			{key: '', tab: '全部'}
 		]
@@ -77,7 +54,7 @@ class PostList extends React.Component {
 				>
 					<List
 						dataSource={data}
-						renderItem={this.postItem}
+						renderItem={(post) => {return <PostItem post={post} />}}
 						bordered
 					/>
 				</InfiniteScroll>

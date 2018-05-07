@@ -22,7 +22,7 @@ class EditPost extends React.Component {
   componentDidMount() {
     AppMobx.app.head_fixed = false
     getPostDetail(this.state.id, false).then((result) => {
-      if (result.success == true) {
+      if (result.success === true) {
         this.setState({ post: result.data, loading: false })
       }
     })

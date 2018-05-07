@@ -5,12 +5,13 @@ import appMobx from '../mobx/app';
 import { Link } from 'react-router-dom';
 import AvatarCommon from '../components/common/avatar';
 import timeLabel from '../lib/timeLabel';
+import PostItem from '../components/common/postItem'
 
 @observer
 class Dashboard extends React.Component {
 	recentPostList = (post) => {
 		let { category } = post
-		if (category == undefined) { category = { name: '垃圾' } }
+		if (category === undefined) { category = { name: '垃圾' } }
 		return (
 			<div className={'postItem'}>
 				<div className={'postItemAvatar'}>
@@ -33,7 +34,10 @@ class Dashboard extends React.Component {
 		return (
 			<div className={'homePage'}>
 				<Card title={'最新文章'} className={'recentBlogs'}>
-					<List dataSource={appMobx.app.recent_posts} renderItem={this.recentPostList} />
+					<List 
+						dataSource={appMobx.app.recent_posts} 
+						renderItem={(post) => {return <PostItem post={post} />}} 
+					/>
 				</Card>
 				<div className={'blogAndLinks'}>
 					<Card title={'关于这个博客'} className={'aboutThisBlog'}>

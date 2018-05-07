@@ -4,7 +4,7 @@ import userMobx from '../mobx/user';
 let token = () => {
 	return userMobx.user.token
 }
-var OSS = require('ali-oss/dist/aliyun-oss-sdk.js')
+var OSS = require('ali-oss/dist/aliyun-oss-sdk.min.js')
 export const client = new OSS.Wrapper({
 	region: 'oss-cn-beijing',
 	accessKeyId: 'LTAIchDyb5UpU9sq',
@@ -53,12 +53,27 @@ const _PUT_ = (body) => {
 	)
 }
 
+//默认的PUT Header
+const _DELETE_ = () => {
+	return (
+		{
+			method: 'DELETE',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'token': token()
+			}
+		}
+	)
+}
+
 //通用的请求生成器
 class Requester {
 
 	constructor(header = {}, url) {
 		// this.host = 'http://u1c2g:7001/api'
-		this.host = 'http://blog.peterji.cn:7001/api'
+		// this.host = 'http://blog.peterji.cn:7001/api'
+		this.host = 'http://localhost:7001/api'
 		this.url = url
 		this.header = header
 	}
@@ -115,6 +130,10 @@ export const userRegister = (user) => {
 	return new Requester(_POST_(user), `/users/register`).do_fetch()
 }
 
+export const userGetCode = (email) => {
+	return new Requester(_GET_(), `/users/get_validate_code?email=${email}`).do_fetch()
+}
+
 export const userLogin = (user) => {
 	return new Requester(_POST_(user), '/users/login').do_fetch()
 }
@@ -141,6 +160,10 @@ export const updatePost = (id, post) => {
 
 export const getPostDetail = (id, with_comment=true) => {
 	return new Requester(_GET_(), `/posts/${id}?with_comment=${with_comment}`).do_fetch()
+}
+
+export const destroyPost = (id) => {
+	return new Requester(_DELETE_(), `/posts/${id}`).do_fetch()
 }
 
 export const addNewComment = (comment) => {

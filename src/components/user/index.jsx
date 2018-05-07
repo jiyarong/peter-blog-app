@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Upload, message, Collapse, Button, List, Tag } from 'antd';
+import { Upload, message, Collapse, Button, List } from 'antd';
 import { updateAliyunOss, getRecentPosts } from '../../config/api';
 import { Redirect, Link } from 'react-router-dom';
 import userMobx from '../../mobx/user';
 import { observer } from 'mobx-react';
-import AvatarCommon from '../common/avatar'
-import timeLabel from '../../lib/timeLabel'
+import AvatarCommon from '../common/avatar';
+import PostItem from '../common/postItem'
 
 const Dragger = Upload.Dragger;
 const Panel = Collapse.Panel;
@@ -74,27 +74,6 @@ class UserIndex extends React.Component {
 		this.setState({ login_exoired: true })
 	}		
 
-	recentPostList = (post) => {
-		let { category } = post
-		if (category == undefined) { category = { name: '垃圾' } }
-		return (
-			<div className={'postItem'}>
-				<div className={'postItemAvatar'}>
-					<AvatarCommon user={userMobx.user} />
-				</div>
-				<div className={'postItemCategory'}>
-					<Tag color={'green'}>{category.name}</Tag>
-				</div>
-				<div className={'postItemTitle'}>
-					<Link to={`/posts/${post.id}`} >
-						{post.title}
-					</Link>
-				</div>
-				<div className={'postItemUpdatedAt'}>{timeLabel(post.updated_at)}</div>
-			</div>
-		)
-	}
-
 	render() {
 		const { name, login_exoired, recentPosts } = this.state
 		const { user } = userMobx
@@ -140,7 +119,10 @@ class UserIndex extends React.Component {
 						</table>
 					</Panel>
 					<Panel header="最近的文章" key="recentPosts">
-						<List dataSource={recentPosts} renderItem={this.recentPostList} />				
+						<List 
+							dataSource={recentPosts} 
+							renderItem={(post) => <PostItem post={post} />} 
+						/>				
 					</Panel>
 					<Panel header="最近的评论" key="recentComments">
 						test

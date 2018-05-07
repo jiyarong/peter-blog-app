@@ -1,5 +1,4 @@
 import * as React from 'react';
-import 'font-awesome/css/font-awesome.min.css';
 import { createNewPost } from '../../config/api';
 import { Redirect } from 'react-router';
 import PostMobx from '../../mobx/post';
