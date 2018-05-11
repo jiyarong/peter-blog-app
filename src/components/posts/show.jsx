@@ -93,8 +93,8 @@ class PostDetail extends React.Component {
 			<div key={index} className={'comment'}>
 				<Avatar user={creator} />
 				<div className={'commentContentContainer'}>
-					<div>{creator && creator.name || '无名'} #{index + 1} 回复于: {timeLabel(comment.created_at)}</div>
-					<ReactMarkDown source={comment.content} renderers={{ code: CodeBlock }} />
+					<div>{(creator && creator.name) || '无名'} #{index + 1} 回复于: {timeLabel(comment.created_at)}</div>
+					<ReactMarkDown source={comment.content} renderers={{ code: CodeBlock }} escapeHtml={false} />
 				</div>
 				<Button onClick={() => this.replyComment(creator, index + 1)}>
 					<Icon type="rollback" />
@@ -125,7 +125,7 @@ class PostDetail extends React.Component {
 										data.user_id === userMobx.user.id ?
 											<div style={{ paddingLeft: '10px' }}>
 												<Button onClick={() => this.setState({ edit: true })} >
-													<Icon type={'edit'} style={{ fontSize: '15px' }} />
+													<Icon type={'edit'} style={{ fontSize: '15px', color: 'black' }} />
 												</Button>
 												&nbsp;
 												<Button type={'danger'} onClick={this.destroyPost}>
@@ -142,7 +142,7 @@ class PostDetail extends React.Component {
 						}
 					>
 						<div className={'postContent'} >
-							<ReactMarkDown source={data.content} renderers={{ code: CodeBlock }} />
+							<ReactMarkDown source={data.content} renderers={{ code: CodeBlock }} escapeHtml={false} />
 						</div>
 					</Card>
 					<Card className={'postComments'} title={`回复: (${comments.length})`}>
