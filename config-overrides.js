@@ -10,9 +10,5 @@ module.exports = function override(config, env) {
   })(config, env);
 	config = rewireMobX(config, env);
 
-	// console.log('----', config)
-	// config.output.filename = 'http://assets.peteji.cn/js/[name].[chunkhash:8].js'
-	// config.output.publicPath = './'
-
 	return config;
 };

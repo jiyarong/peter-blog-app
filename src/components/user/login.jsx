@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Form, Icon, Input, Button, Row, Col, message } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { Link } from 'react-router-dom'
 import userMobx from '../../mobx/user';
 import { Redirect } from 'react-router';
@@ -38,10 +38,7 @@ class Login extends React.Component {
 			return <Redirect to={'/'} />
 		} else {
 			return (
-				<Row>
-					<Col span={8} />
-					<Col span={8}>
-						<Form className="loginForm">
+				<Form className="loginForm">
 							<div style={{ textAlign: 'center' }}>
 								<h2>登录博客</h2>
 							</div>
@@ -67,9 +64,6 @@ class Login extends React.Component {
 								<Link to="/user/register" >注册新账号</Link>
 							</FormItem>
 						</Form>
-					</Col>
-					<Col span={8} />
-				</Row>
 	
 			);
 		}
