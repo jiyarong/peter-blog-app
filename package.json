@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://blog.peterji.cn",
   "dependencies": {
-    "ali-oss": "^4.13.2",
+    "ali-oss": "^5.1.1",
     "antd": "^3.3.3",
     "codemirror": "^5.37.0",
     "font-awesome": "^4.7.0",
