@@ -226,18 +226,22 @@ export default class Milk extends Component {
             },
             {
               type: 'header',
+              text: 'H',
               fn: this.handleCtx().mark
             },
             {
               type: 'underline',
+              text: 'U',
               fn: this.handleCtx().underline
             },
             {
               type: 'bold',
+              text: 'B',
               fn: this.handleCtx().bold
             },
             {
               type: 'italic',
+              text: 'I',
               fn: this.handleCtx().italic
             },
           ]}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { milkFileReader } from '../../lib/milkdown/Milk';
 import { updateAliyunOss } from '../../config/api';
-import 'font-awesome/css/font-awesome.min.css';
+// import 'font-awesome/css/font-awesome.min.css';
 
 let blobReader = file => (
   new Promise(async (res, rej) => {
