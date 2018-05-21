@@ -5,7 +5,7 @@ let token = () => {
 	return userMobx.user.token
 }
 var OSS = require('ali-oss/dist/aliyun-oss-sdk.min.js')
-export const client = new OSS.Wrapper({
+export var client = new OSS.Wrapper({
 	region: 'oss-cn-beijing',
 	accessKeyId: 'LTAIchDyb5UpU9sq',
 	accessKeySecret: 'qV8ENn0CBeJ0RoIPvL2G9ZuPkk8fhs',
