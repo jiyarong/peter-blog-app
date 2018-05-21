@@ -6,10 +6,10 @@ let token = () => {
 }
 var OSS = require('ali-oss/dist/aliyun-oss-sdk.min.js')
 export var client = new OSS.Wrapper({
-	region: 'oss-cn-beijing',
 	accessKeyId: 'LTAIchDyb5UpU9sq',
 	accessKeySecret: 'qV8ENn0CBeJ0RoIPvL2G9ZuPkk8fhs',
-	bucket: 'peter-blog'
+	bucket: 'peter-blog',
+	endpoint: 'https://oss-cn-beijing.aliyuncs.com'
 });
 
 const _GET_ = () => {

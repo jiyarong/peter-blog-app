@@ -3,24 +3,6 @@ import { Button, Icon } from 'antd';
 
 import './Control.less';
 
-const Btn = ({ icon, click }) => (
-  <div>
-    <button className={ icon } onClick={ click } />
-  </div>
-);
-
-const Rdo = ({value, name, checked, onChange, icon}) => (
-  <div>
-    <input
-      type="radio"
-      value={value}
-      checked={checked}
-      onChange={onChange}
-    />
-    <label className={ icon } />
-  </div>
-);
-
 export default ({ onFullScreen, onPreview, onPasteModeChange, pasteMode }) => (
   <div className="milk-buttons">
     <div className="milk-buttons-container">
